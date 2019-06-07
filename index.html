@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>OPD CEU Calculator</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style>
+        html {
+            font-family: 'Roboto', sans-serif;
+            font-size: 110%;
+        }
+
+        div {
+            padding-bottom: 10px;
+        }
+
+        input {
+            font-size: 120%;
+        }
+
+        input[type=checkbox], input[type=radio] {
+            transform: scale(1.5);
+        }
+
+        button {
+            font-size: 120%;
+            padding: 5px;
+            margin: 20px 20px 0px 20px;
+        }
+
+        #CEU {
+            font-size: 2.5em;
+            margin: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>OPD CEU CALCULATOR</h1>
+    <div>
+        <h2>Term</h2>
+        <p>Select the term for which the class will be run.</p>
+        <input id="springInput" type="radio" name="term" value="spring" />Spring
+        <input id="summerInput" type="radio" name="term" value="summer" />Summer
+        <input id="fallInput" type="radio" name="term" value="fall" />Fall
+    </div>
+
+    <div>
+        <h2>Class Time</h2>
+        <p>Please enter the class start and end times in 24-hour format. For example, 9:00AM would be "0900". Numbers only, do not include colons.</p>
+        <div>
+            <label>Start Time</label>
+            <input id="startInput" type="text" placeholder="1700">
+        </div>
+        <div>
+            <label>End Time</label>
+            <input id="endInput" type="text" placeholder="1815">
+        </div>
+    </div>
+
+    <div>
+        <h2>Class Days of Week</h2>
+        <p>Select the days of the week that the class is hosted.</p>
+        <input id="mondayInput" type="checkbox" name="dotw" value="monday">Monday
+        <input id="tuesdayInput" type="checkbox" name="dotw" value="tuesday">Tuesday
+        <input id="wednesdayInput" type="checkbox" name="dotw" value="wednesday">Wednesday
+        <input id="thursdayInput" type="checkbox" name="dotw" value="thursday">Thursday
+        <input id="fridayInput" type="checkbox" name="dotw" value="friday">Friday
+		<input id="saturdayInput" type="checkbox" name="dotw" value="saturday">Saturday
+    </div>
+
+    <div>
+        <button onclick="main()">CALCULATE</button>
+    </div>
+
+    <div>
+        <h2>Results</h2>
+        <p>CEU's:
+            <span id="CEU"></span>
+        </p>
+    </div>
+
+
+    <footer>
+        <p>
+            <a href="https://github.com/kenellorando/ceu-calculator">View Source</a>
+        </p>
+        <p>0.1.1</p>
+    </footer>
+
+    <script type="text/javascript">
+        function main() {
+            // Terms
+            let springInput = document.getElementById('springInput').checked;
+            let summerInput = document.getElementById('summerInput').checked;
+            let fallInput = document.getElementById('fallInput').checked;
+            // Days of week of class
+            let mondayInput = document.getElementById('mondayInput').checked;
+            let tuesdayInput = document.getElementById('tuesdayInput').checked;
+            let wednesdayInput = document.getElementById('wednesdayInput').checked;
+            let thursdayInput = document.getElementById('thursdayInput').checked;
+            let fridayInput = document.getElementById('fridayInput').checked;
+			 let saturdayInput = document.getElementById('saturdayInput').checked;
+
+            // Initialize counting total number of days of class
+            let daysOfClass = {
+                "monday": 0,
+                "tuesday": 0,
+                "wednesday": 0,
+                "thursday": 0,
+                "friday": 0,
+				"saturday":0
+            }
+
+            // Calculate number of class days
+            if (springInput) {
+                if (mondayInput) {
+                    daysOfClass.monday += 17;
+                }
+                if (tuesdayInput) {
+                    daysOfClass.tuesday += 17;
+                }
+                if (wednesdayInput) {
+                    daysOfClass.wednesday += 17;
+                }
+                if (thursdayInput) {
+                    daysOfClass.thursday += 17;
+                }
+                if (fridayInput) {
+                    daysOfClass.friday += 17;
+                }
+				 if (saturdayInput) {
+                    daysOfClass.saturday += 17;
+                }
+
+                daysOfClass.monday -= 2;
+                daysOfClass.tuesday -= 1;
+                daysOfClass.wednesday -= 1;
+                daysOfClass.thursday -= 1;
+                daysOfClass.friday -= 1;
+				daysOfClass.saturday -= 1;
+            } else if (summerInput) {
+                if (mondayInput) {
+                    daysOfClass.monday += 8;
+                }
+                if (tuesdayInput) {
+                    daysOfClass.tuesday += 8;
+                }
+                if (wednesdayInput) {
+                    daysOfClass.wednesday += 8;
+                }
+                if (thursdayInput) {
+                    daysOfClass.thursday += 8;
+                }
+                if (fridayInput) {
+                    daysOfClass.friday += 8;
+                }
+				 if (saturdayInput) {
+                    daysOfClass.saturday += 8;
+                }
+
+                daysOfClass.monday -= 1;
+				daysOfClass.thursday -= 1;
+            } else if (fallInput) {
+                if (mondayInput) {
+                    daysOfClass.monday += 16;
+                }
+                if (tuesdayInput) {
+                    daysOfClass.tuesday += 16;
+                }
+                if (wednesdayInput) {
+                    daysOfClass.wednesday += 16;
+                }
+                if (thursdayInput) {
+                    daysOfClass.thursday += 16;
+                }
+                if (fridayInput) {
+                    daysOfClass.friday += 16;
+                }
+				if (saturdayInput) {
+                    daysOfClass.saturday += 16;
+                }
+
+                daysOfClass.monday -= 2;
+                daysOfClass.wednesday -= 1;
+                daysOfClass.thursday -= 1;
+                daysOfClass.friday -= 1;
+				daysOfClass.saturday -= 1;
+            } else {
+                alert("Unknown term")
+            }
+
+            console.log(daysOfClass);
+
+            // Total the number of days of class
+            let totalClasses = 0;
+            for (let days in daysOfClass) {
+                if (daysOfClass[days] > 0) {
+                    totalClasses += daysOfClass[days];
+                }
+            }
+
+            console.log("Class days: " + totalClasses);
+
+            // Read given start and end times
+            let endTimeInput = document.getElementById("endInput").value;
+            let startTimeInput = document.getElementById("startInput").value;
+
+            // Convert to minutes
+            let endTimeMinutes = endTimeInput.substring(0, 2) * 60 + parseInt(endTimeInput.substring(2, 4));
+            let startTimeMinutes = startTimeInput.substring(0, 2) * 60 + parseInt(startTimeInput.substring(2, 4));
+            let classRunTime = endTimeMinutes - startTimeMinutes;
+
+            // Calculate CEU
+            let CEU = (classRunTime * totalClasses) / 600;
+            console.log("Calculated CEU: " + (classRunTime * totalClasses) / 600);
+            console.log("Rounded CEU: " + Math.round(((classRunTime * totalClasses) / 600) * 10) / 10);
+            if (CEU > 4.9) {
+                document.getElementById("CEU").innerHTML = "4.9 (Maximum, actual: " + (classRunTime * totalClasses) / 600 + ")";
+            } else if (CEU < 3.8) {
+                document.getElementById("CEU").innerHTML = "3.8 (Minimum, actual: " + (classRunTime * totalClasses) / 600 + ")";
+            } else {
+                document.getElementById("CEU").innerHTML = Math.round(((classRunTime * totalClasses) / 600) * 10) / 10;
+            }
+
+            
+        }
+    </script>
+</body>
+
+</html>
